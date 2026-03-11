@@ -1,0 +1,134 @@
+version: "3.9"
+
+x-common-env: &common-env
+  env_file: .env
+  restart: unless-stopped
+  networks:
+    - agent-net
+
+services:
+  mcp-server:
+    <<: *common-env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m mcp_server.main
+    ports:
+      - "8000:8000"
+    environment:
+      MCP_SERVER_HOST: "0.0.0.0"
+      MCP_SERVER_PORT: "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  news-agent:
+    <<: *common-env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m agents.news_agent.main
+    ports:
+      - "8001:8001"
+    environment:
+      MCP_SERVER_HOST: mcp-server
+      NEWS_AGENT_HOST: "0.0.0.0"
+      NEWS_AGENT_PORT: "8001"
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  weather-agent:
+    <<: *common-env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m agents.weather_agent.main
+    ports:
+      - "8002:8002"
+    environment:
+      MCP_SERVER_HOST: mcp-server
+      WEATHER_AGENT_HOST: "0.0.0.0"
+      WEATHER_AGENT_PORT: "8002"
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  report-agent:
+    <<: *common-env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m agents.report_agent.main
+    ports:
+      - "8003:8003"
+    environment:
+      MCP_SERVER_HOST: mcp-server
+      REPORT_AGENT_HOST: "0.0.0.0"
+      REPORT_AGENT_PORT: "8003"
+    depends_on:
+      mcp-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  orchestrator:
+    <<: *common-env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m orchestrator.main
+    ports:
+      - "8004:8004"
+    environment:
+      NEWS_AGENT_HOST: news-agent
+      WEATHER_AGENT_HOST: weather-agent
+      REPORT_AGENT_HOST: report-agent
+      ORCHESTRATOR_HOST: "0.0.0.0"
+      ORCHESTRATOR_PORT: "8004"
+    depends_on:
+      news-agent:
+        condition: service_healthy
+      weather-agent:
+        condition: service_healthy
+      report-agent:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ui:
+    <<: *common-env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m ui.app
+    ports:
+      - "7860:7860"
+    environment:
+      ORCHESTRATOR_HOST: orchestrator
+      UI_PORT: "7860"
+    depends_on:
+      orchestrator:
+        condition: service_healthy
+
+networks:
+  agent-net:
+    driver: bridge

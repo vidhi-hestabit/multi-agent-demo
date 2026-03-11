@@ -1,0 +1,20 @@
+# This project uses uv. All dependencies are declared in pyproject.toml.
+#
+# To install:
+#   uv sync              # install all deps into .venv
+#   uv sync --dev        # also install dev/test extras
+#   uv sync --extra otel # also install OpenTelemetry extras
+#
+# To add a new dependency:
+#   uv add <package>
+#
+# To run any command inside the venv without activating it:
+#   uv run python -m mcp_server.main
+#
+# requirements.txt is intentionally minimal - it exists only for
+# tooling that cannot read pyproject.toml (e.g. some CI systems).
+# Generated from: uv export --no-dev > requirements.txt
+#
+# To regenerate:
+#   uv export --no-dev -o requirements.txt
+

@@ -1,0 +1,28 @@
+{
+  "name": "News Agent",
+  "description": "Fetches and summarizes news articles on any topic using NewsAPI.",
+  "url": "http://localhost:8001",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "push_notifications": false,
+    "state_transition_history": true
+  },
+  "skills": [
+    {
+      "id": "fetch_news",
+      "name": "Fetch News",
+      "description": "Retrieve and summarize the latest news articles on a given topic.",
+      "input_modes": ["text"],
+      "output_modes": ["text", "data"],
+      "tags": ["news", "information", "summarization"],
+      "examples": [
+        "Get me the latest AI news",
+        "What is happening with climate change?",
+        "News about SpaceX launches"
+      ]
+    }
+  ],
+  "default_input_modes": ["text"],
+  "default_output_modes": ["text"]
+}

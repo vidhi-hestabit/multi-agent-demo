@@ -1,0 +1,27 @@
+{
+  "name": "Report Agent",
+  "description": "Compiles data from multiple sources into structured markdown reports.",
+  "url": "http://localhost:8003",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "push_notifications": false,
+    "state_transition_history": true
+  },
+  "skills": [
+    {
+      "id": "generate_report",
+      "name": "Generate Report",
+      "description": "Compile data from multiple sources into a structured markdown report.",
+      "input_modes": ["text", "data"],
+      "output_modes": ["text", "data"],
+      "tags": ["report", "document", "aggregation"],
+      "examples": [
+        "Generate a report about AI trends",
+        "Create a weather and news summary report for London"
+      ]
+    }
+  ],
+  "default_input_modes": ["text"],
+  "default_output_modes": ["text"]
+}

@@ -8,43 +8,45 @@ version = "1.0.0"
 description = "Production-ready multi-agent AI system with A2A and MCP protocols"
 requires-python = ">=3.11"
 readme = "README.md"
+
 dependencies = [
     # Web framework
-    "fastapi==0.111.0",
-    "uvicorn[standard]==0.29.0",
-    "httpx==0.27.0",
+    "fastapi>=0.118",
+    "uvicorn[standard]>=0.29",
+    "httpx>=0.27",
     # Config / validation
-    "pydantic==2.7.1",
-    "pydantic-settings==2.3.0",
-    "python-dotenv==1.0.1",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.3",
+    "python-dotenv>=1.0",
     # LLM
-    "groq==0.9.0",
+    "groq>=0.9",
     # MCP
-    "mcp==1.0.0",
+    "mcp>=1.0",
     # Async
-    "anyio==4.4.0",
-    "asyncio-atexit==1.0.1",
+    "anyio>=4.6",
+    "asyncio-atexit>=1.0",
     # Utilities
-    "python-dateutil==2.9.0",
-    "tenacity==8.3.0",
-    "structlog==24.2.0",
+    "python-dateutil>=2.9",
+    "tenacity>=8.3",
+    "structlog>=24",
     # Email
-    "aiosmtplib==3.0.1",
+    "aiosmtplib>=3.0",
     # UI
-    "gradio==4.36.1",
+    "gradio>=4.36",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.2.2",
-    "pytest-asyncio==0.23.7",
-    "respx==0.21.1",
-    "ruff==0.4.9",
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "respx>=0.21",
+    "ruff>=0.4"
 ]
+
 otel = [
-    "opentelemetry-sdk==1.25.0",
-    "opentelemetry-exporter-otlp==1.25.0",
-    "opentelemetry-instrumentation-fastapi==0.46b0",
+    "opentelemetry-sdk>=1.25",
+    "opentelemetry-exporter-otlp>=1.25",
+    "opentelemetry-instrumentation-fastapi>=0.46b0"
 ]
 
 [project.scripts]
@@ -69,10 +71,10 @@ python_functions = ["test_*"]
 line-length = 100
 target-version = "py311"
 
-[tool.uv]
-dev-dependencies = [
-    "pytest==8.2.2",
-    "pytest-asyncio==0.23.7",
-    "respx==0.21.1",
-    "ruff==0.4.9",
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "respx",
+    "ruff"
 ]
